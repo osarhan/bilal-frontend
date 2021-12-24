@@ -22,6 +22,14 @@
 <script>
 export default {
   name: 'Speakers',
+  props: {
+    'savedVolume': {
+      type: Number,
+      default() {
+        return 25
+      }
+    }
+  },
   data() {
     return {
       'volume': 25
