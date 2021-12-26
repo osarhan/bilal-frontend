@@ -1,112 +1,62 @@
 <template>
-  <div class="q-pa-md">
-    <q-layout view="hHh Lpr lff" container style="height: 500px; width: 600px" class="shadow-2 rounded-borders">
-      <q-header elevated class="bg-teal">
+  <div>
+    <q-layout
+        style=" background: linear-gradient(teal 50%, #0c70e5 100% )"
+        class="shadow-2 ">
+      <q-header
+          elevated
+          class="bg-teal">
         <q-toolbar>
-          <q-btn flat @click="drawer = !drawer" round dense icon="menu"/>
-          <q-toolbar-title>Project Bilal</q-toolbar-title>
+          <q-btn
+              flat
+              @click="drawer = !drawer"
+              round
+              dense
+              icon="menu"
+          />
+          <q-toolbar-title>
+            Project Bilal
+          </q-toolbar-title>
         </q-toolbar>
       </q-header>
 
       <q-drawer
           v-model="drawer"
           show-if-above
-          :width="200"
+          :width="190"
           :breakpoint="500"
       >
-        <q-scroll-area class="fit">
-          <q-list padding class="menu-list">
+        <q-list padding class="menu-list">
+          <div
+              v-for="m in menuItems"
+              :key="m">
             <q-item
-                :active="activeView === 'dashboard'"
-                v-on:click="activeView = 'dashboard'"
-                clickable v-ripple>
+                :active="activeView === m"
+                v-on:click="changeView(m)"
+                clickable
+                v-ripple>
               <q-item-section avatar>
-                <q-icon name="dashboard"/>
+                <q-icon :name="m === 'Athans' ? 'mosque' : m.toLowerCase()"/>
               </q-item-section>
-
               <q-item-section>
-                Dashboard
+                {{ m }}
               </q-item-section>
+
             </q-item>
+            <q-separator v-if="m === 'Speakers'"/>
+          </div>
 
-            <q-item
-                :active="activeView === 'speakers'"
-                v-on:click="activeView = 'speakers'"
-                clickable v-ripple>
-              <q-item-section avatar>
-                <q-icon name="speaker_group"/>
-              </q-item-section>
-
-              <q-item-section>
-                Speakers
-              </q-item-section>
-            </q-item>
-
-            <q-item
-                :active="activeView === 'athans'"
-                v-on:click="activeView = 'athans'"
-                clickable v-ripple>
-              <q-item-section avatar>
-                <q-icon name="mosque"/>
-              </q-item-section>
-
-              <q-item-section>
-                Athans
-              </q-item-section>
-            </q-item>
-            <q-separator/>
-            <q-item
-                :active="activeView === 'settings'"
-                v-on:click="activeView = 'settings'"
-                clickable v-ripple
-            >
-              <q-item-section avatar>
-                <q-icon name="settings"/>
-              </q-item-section>
-
-              <q-item-section>
-                Settings
-              </q-item-section>
-            </q-item>
-            <q-item
-                :active="activeView === 'help'"
-                v-on:click="activeView = 'help'"
-                clickable v-ripple
-            >
-              <q-item-section avatar>
-                <q-icon name="help"/>
-              </q-item-section>
-
-              <q-item-section>
-                Help
-              </q-item-section>
-            </q-item>
-            <q-item
-                :active="activeView === 'about'"
-                v-on:click="activeView = 'about'"
-                clickable v-ripple
-            >
-              <q-item-section avatar>
-                <q-icon name="info"/>
-              </q-item-section>
-
-              <q-item-section>
-                About
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-scroll-area>
+        </q-list>
+        <q-chip>Made by Omar and Rafik</q-chip>
       </q-drawer>
 
-      <q-page-container class="bg-teal-2">
-        <q-page padding>
-          <About v-if="activeView === 'about'"/>
-          <Athans v-if="activeView === 'athans'"/>
-          <Dashboard v-if="activeView === 'dashboard'"/>
-          <Help v-if="activeView === 'help'"/>
-          <Settings v-if="activeView === 'settings'"/>
-          <Speakers v-if="activeView === 'speakers'"/>
-        </q-page>
+      <q-page-container>
+        <About v-if="activeView === 'Info'"/>
+        <Athans v-if="activeView === 'Athans'"/>
+        <Dashboard v-if="activeView === 'Dashboard'"/>
+        <Help v-if="activeView === 'Help'"/>
+        <Settings v-if="activeView === 'Settings'"/>
+        <Speakers v-if="activeView === 'Speakers'"/>
       </q-page-container>
     </q-layout>
   </div>
@@ -140,9 +90,14 @@ export default {
       userLocation: ref(null),
       userConfigs: ref(null),
       drawer: ref(false),
+      menuItems: ['Dashboard', 'Athans', 'Speakers', 'Settings', 'Help', 'Info']
     }
   },
   methods: {
+    changeView(newView) {
+      this.activeView = newView
+      this.drawer = false
+    },
     get_athans() {
     },
     get_prayer_configs() {
